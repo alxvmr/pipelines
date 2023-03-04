@@ -1,8 +1,7 @@
 import click
 
-from . import tasks
-from .core import Pipeline
-from .load import load_pipeline
+from core import Pipeline
+from load import load_pipeline
 
 
 # TASKS = [

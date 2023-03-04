@@ -1,7 +1,7 @@
 import sys
 import importlib.machinery
 
-from .utils import print_error
+from utils import print_error
 
 
 def load_pipeline():
