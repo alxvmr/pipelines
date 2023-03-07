@@ -22,6 +22,4 @@ RUN pip install .
 #RUN chmod +x /wait
 #CMD /wait && npm start
 
-WORKDIR ./example_pipeline
-
-CMD ["python", "./pipeline.py"]
+CMD ["python", "./example_pipeline/pipeline.py"]

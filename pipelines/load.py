@@ -1,14 +1,19 @@
 import sys
 import importlib.machinery
+from pathlib import Path
+import os
 
 from .utils import print_error
 
 
 def load_pipeline():
-    source_dir = '.'
-    source_file_path = './pipeline.py'
+    #source_dir = '.'
+    #source_file_path = './pipeline.py'
 
-    sys.path.insert(0, source_dir)
+    dir = os.getcwd()
+    source_file_path = f'{dir}/example_pipeline/pipeline.py'
+
+    #sys.path.insert(0, source_dir)
     loader = importlib.machinery.SourceFileLoader('pipeline', source_file_path)
 
     try:

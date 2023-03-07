@@ -1,6 +1,7 @@
 import os
 from .dbwork import WorkWithDB
 
+
 DB = WorkWithDB()
 
 
@@ -24,11 +25,11 @@ class CopyToFile(BaseTask):
     def __init__(self, table, output_file):
         self.table = table
 
-        # проверим, указали ли расширение csv
+        # добавим папку, в которую сохраняются результаты
         if output_file.rsplit('.', 1)[-1] == "csv":
-            self.output_file = os.path.join(os.path.abspath('data'), output_file)
+            self.output_file = os.path.join(os.path.abspath('example_pipeline/data'), output_file)
         else:
-            self.output_file = os.path.join(os.path.abspath('data'), f"{output_file}.csv")
+            self.output_file = os.path.join(os.path.abspath('example_pipeline/data'), f"{output_file}.csv")
 
     def short_description(self):
         return f'{self.table} -> {self.output_file}'
