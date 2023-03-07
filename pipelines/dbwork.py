@@ -4,7 +4,7 @@ import pandas as pd
 
 
 class WorkWithDB:
-    def __init__(self, dbname='pipelines', user='postgres', password='12345', host='localhost', port='5432'):
+    def __init__(self, dbname='pipelines', user='postgres', password='12345', host='db', port='5432'):
         try:
             self.conn = psycopg2.connect(dbname=dbname, user=user, password=password, host=host, port=port)
             self.cursor = None
