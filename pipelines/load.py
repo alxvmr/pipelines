@@ -1,7 +1,7 @@
 import sys
 import importlib.machinery
 
-from utils import print_error
+from .utils import print_error
 
 
 def load_pipeline():
@@ -22,4 +22,3 @@ def load_pipeline():
     except AttributeError:
         print_error(f"There is no pipeline object defined in this file: {source_file_path}")
         sys.exit(1)
-

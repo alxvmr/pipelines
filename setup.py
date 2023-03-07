@@ -11,7 +11,7 @@ setup(
     ],
     entry_points={
         'console_scripts': [
-            'pipelines = pipelines:cli',
+            'pipelines = pipelines.cli:main'
         ],
     },
 )

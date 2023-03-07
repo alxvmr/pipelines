@@ -85,27 +85,6 @@ class CTAS(BaseTask):
         return f'{self.title}'
 
     def run(self):
-        """
-        Была создана функция в БД
-        create function domain_of_url(url text)
-        returns text
-        language plpgsql
-        as
-        $$
-        declare
-           domain_of_url text;
-        begin
-           select (regexp_matches(url, '\/\/(.*?)\/', 'g'))[1]
-           into domain_of_url;
-
-           return domain_of_url;
-        end;
-        $$;
-        """
-
-        query = f"""
-            CREATE TABLE {self.table} as {self.sql_query}
-        """
-        DB.run_query_without_output(query)
-
+        DB.create_fun_domain_of_url()
+        DB.create_table_as(self.table, self.sql_query)
         print(f"Create table `{self.table}` as SELECT:\n{self.sql_query}")

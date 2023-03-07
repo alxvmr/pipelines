@@ -1,7 +1,6 @@
 import click
 
-from core import Pipeline
-from load import load_pipeline
+from .load import load_pipeline
 
 
 # TASKS = [

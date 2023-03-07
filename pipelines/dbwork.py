@@ -2,10 +2,11 @@ import psycopg2
 from psycopg2 import Error
 import pandas as pd
 
+
 class WorkWithDB:
-    def __init__(self, dbname='pipelines', user='postgres', password='12345', host='localhost'):
+    def __init__(self, dbname='pipelines', user='postgres', password='12345', host='localhost', port='5432'):
         try:
-            self.conn = psycopg2.connect(dbname=dbname, user=user, password=password, host=host)
+            self.conn = psycopg2.connect(dbname=dbname, user=user, password=password, host=host, port=port)
             self.cursor = None
         except (Exception, Error) as error:
             print("Ошибка при работе с PostgreSQL", error)
@@ -51,10 +52,10 @@ class WorkWithDB:
         }
         return conversion_table[data_type]
 
-    def create_table_from_csv(self, input_file, table_name): # создание таблицы с заголовком как в csv
+    def create_table_from_csv(self, input_file, table_name):  # создание таблицы с заголовком как в csv
         input_df = pd.read_csv(input_file, sep=',')
         header = dict(input_df.dtypes)
-        query = f"CREATE TABLE {table_name} ("
+        query = f"CREATE TABLE IF NOT EXISTS {table_name} ("
 
         for name, t in header.items():
             type_postgresql = self.db_data_type(str(t))
@@ -62,4 +63,31 @@ class WorkWithDB:
 
         query = query[:-2] + ")"
 
+        self.run_query_without_output(query)
+
+    def create_table_as(self, name, sql_query):
+        query = f"""
+                    CREATE TABLE IF NOT EXISTS {name} as {sql_query}
+                """
+        self.run_query_without_output(query)
+
+    def create_fun_domain_of_url(self):
+        self.run_query_without_output("drop function if exists domain_of_url;")
+
+        query = """
+                create function domain_of_url(url text)
+                returns text
+                language plpgsql
+                as
+                $$
+                declare
+                   domain_of_url text;
+                begin
+                   select (regexp_matches(url, '\/\/(.*?)\/', 'g'))[1]
+                   into domain_of_url;
+
+                   return domain_of_url;
+                end;
+                $$;
+                """
         self.run_query_without_output(query)
