@@ -1,16 +1,30 @@
-version: '3.7'
+version: '3.8'
 services:
-  db:
-    build: ./db/
+  pipelines:
+    build: ./
+    #command: bash -c 'while !</dev/tcp/db/5432; do sleep 1; done;'
+    ports:
+      - "8000:8000"
+    depends_on:
+      db:
+        condition: service_healthy
     environment:
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=12345
-      - POSTGRES_HOST=db
+      - DB_CONNECTION=pgsql
+      - DB_HOST=db
+      - DB_PORT=5432
+      - DB_DATABASE=pipelines
+      - DB_USERNAME=postgres
+      - DB_PASSWORD=12345
+      - WAIT_HOSTS=db:5432
+  db:
+    restart: always
+    build: ./db/
     volumes:
       - ./example_pipeline/data/docker:/var/lib/postgresql/data
     ports:
       - "5432:5432"
-  pipelines:
-    build: ./
-    depends_on:
-      - db
+    healthcheck:
+      test : ["CMD-SHELL", "pg_isready --username=postgres -p 5432"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
