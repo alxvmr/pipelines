@@ -16,6 +16,7 @@ def test_copy_to_file(create_table_for_CopyToFile, table, output_file, correct_f
     cor_f = pd.read_csv(correct_file, sep=',')
     dif = out_f == cor_f
     assert not (False in dif.values.reshape(-1))
+    os.remove(output_file)
 
 @pytest.mark.parametrize("table, input_file", [("temp", "data\\temp_correct_load_file.csv")])
 def test_load_file(input_file, table, client):
@@ -31,6 +32,7 @@ def test_load_file(input_file, table, client):
     cor_f = pd.read_csv(input_file, sep=',')
     dif = out_f == cor_f
     assert not (False in dif.values.reshape(-1))
+    os.remove(out_table_file)
 
 @pytest.mark.parametrize("query, table", [("CREATE TABLE temp (id int)", "temp")])
 def test_run_sql(query, table, client):
@@ -58,6 +60,7 @@ def test_ctas(table1, table2, query, create_table_for_ctas, client):
     # удаление второй таблицы
     query_clear = f"DROP TABLE IF EXISTS {table2}"
     client.run_query_without_output(query_clear)
+    os.remove(out_table_file)
 
 # проверим работу всего pipeline
 def test_pipeline():
@@ -70,4 +73,3 @@ def test_pipeline():
     f2 = pd.read_csv(cor_file, sep=',')
     dif = f1 == f2
     assert not (False in dif.values.reshape(-1))
-
