@@ -27,9 +27,9 @@ class CopyToFile(BaseTask):
 
         # добавим папку, в которую сохраняются результаты
         if output_file.rsplit('.', 1)[-1] == "csv":
-            self.output_file = os.path.join(os.path.abspath('example_pipeline/data'), output_file)
+            self.output_file = output_file
         else:
-            self.output_file = os.path.join(os.path.abspath('example_pipeline/data'), f"{output_file}.csv")
+            self.output_file = f"{output_file}.csv"
 
     def short_description(self):
         return f'{self.table} -> {self.output_file}'
@@ -49,7 +49,6 @@ class LoadFile(BaseTask):
 
     def short_description(self):
         return f'{self.input_file} -> {self.table}'
-
 
     def run(self):
         DB.create_table_from_csv(self.input_file, self.table) # создание таблицы

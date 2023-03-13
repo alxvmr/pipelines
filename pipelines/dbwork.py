@@ -1,10 +1,12 @@
+import os
+
 import psycopg2
 from psycopg2 import Error
 import pandas as pd
 
 
 class WorkWithDB:
-    def __init__(self, dbname='pipelines', user='postgres', password='12345', host='db', port='5432'):
+    def __init__(self, dbname='pipelines', user='postgres', password='12345', host='localhost', port='5432'):
         try:
             self.conn = psycopg2.connect(dbname=dbname, user=user, password=password, host=host, port=port)
             self.cursor = None
@@ -17,6 +19,18 @@ class WorkWithDB:
             self.cursor.execute(query)
             self.conn.commit()
             self.cursor.close()
+        except (Exception, Error) as error:
+            print("Ошибка при работе с PostgreSQL", error)
+
+    def number_of_records_after_query(self, query):
+        try:
+            self.cursor = self.conn.cursor()
+            self.cursor.execute(query)
+            cnt = len(self.cursor.fetchall())
+            self.conn.commit()
+            self.cursor.close()
+
+            return cnt
         except (Exception, Error) as error:
             print("Ошибка при работе с PostgreSQL", error)
 
