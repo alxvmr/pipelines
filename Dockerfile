@@ -15,7 +15,13 @@ COPY pyproject.toml poetry.lock ./
 RUN $POETRY_BIN config --local virtualenvs.create false
 RUN $POETRY_BIN install --no-root
 
-COPY . .
+COPY ./db /pipelines/db
+COPY ./example_pipeline/data /pipelines/example_pipeline/data
+COPY ./example_pipeline/pipeline.py /pipelines/example_pipeline/
+COPY ./pipelines /pipelines/pipelines
+COPY ./tests /pipelines/tests
+COPY ./setup.py /pipelines
+COPY ./README.md /pipelines
 RUN pip install .
 
 #ADD https://github.com/ufoscout/docker-compose-wait/releases/download/2.7.3/wait /wait

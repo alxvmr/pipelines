@@ -2,6 +2,8 @@ import pytest
 from pipelines.tasks import CopyToFile, LoadFile, RunSQL, CTAS
 import os.path
 import pandas as pd
+import sys
+sys.path.append("..")
 from example_pipeline.pipeline import pipeline
 
 

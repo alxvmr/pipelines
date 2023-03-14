@@ -16,11 +16,11 @@ services:
       - DB_USERNAME=postgres
       - DB_PASSWORD=12345
       - WAIT_HOSTS=db:5432
+    volumes:
+      - ./example_pipeline/original/original.csv:/pipelines/example_pipeline/original/original.csv
   db:
     restart: always
     build: ./db/
-    volumes:
-      - ./example_pipeline/data/docker:/var/lib/postgresql/data
     ports:
       - "5432:5432"
     healthcheck:
@@ -28,3 +28,10 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
+#volumes:
+#  original:
+#    driver: local
+#    driver_opts:
+#      o: bind
+#      type: none
+#      device: ./example_pipeline/original/original.csv
