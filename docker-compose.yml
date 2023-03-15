@@ -2,7 +2,6 @@ version: '3.8'
 services:
   pipelines:
     build: ./
-    #command: bash -c 'while !</dev/tcp/db/5432; do sleep 1; done;'
     ports:
       - "8000:8000"
     depends_on:
@@ -25,10 +24,3 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
-#volumes:
-#  original:
-#    driver: local
-#    driver_opts:
-#      o: bind
-#      type: none
-#      device: ./example_pipeline/original/original.csv
