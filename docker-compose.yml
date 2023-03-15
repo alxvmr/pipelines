@@ -9,13 +9,10 @@ services:
       db:
         condition: service_healthy
     environment:
-      - DB_CONNECTION=pgsql
-      - DB_HOST=db
-      - DB_PORT=5432
-      - DB_DATABASE=pipelines
-      - DB_USERNAME=postgres
-      - DB_PASSWORD=12345
-      - WAIT_HOSTS=db:5432
+      - POSTGRES_HOST=db
+      - POSTGRES_DB=pipelines
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=12345
     volumes:
       - ./example_pipeline/original/original.csv:/pipelines/example_pipeline/original/original.csv
   db:
