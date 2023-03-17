@@ -2,9 +2,7 @@ import pytest
 from pipelines.tasks import CopyToFile, LoadFile, RunSQL, CTAS
 import os.path
 import pandas as pd
-import sys
-sys.path.append("..")
-from example_pipeline.pipeline import pipeline
+from data.pipeline import pipeline
 
 
 @pytest.mark.parametrize("table, output_file, correct_file", [("temp", "data\\temp_output.csv", "data\\correct_load_file.csv")])
@@ -66,12 +64,11 @@ def test_ctas(table1, table2, query, create_table_for_ctas, client):
 
 # проверим работу всего pipeline
 def test_pipeline():
-    os.chdir("..\\")
     pipeline.run()
-    output_file = "example_pipeline\\data\\norm.csv"
+    output_file = "data/norm.csv"
     cor_file = "data/correct_ctas.csv"
     f1 = pd.read_csv(output_file, sep=',')
-    os.chdir("tests")
     f2 = pd.read_csv(cor_file, sep=',')
     dif = f1 == f2
     assert not (False in dif.values.reshape(-1))
+
